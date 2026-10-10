@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="御坂戈登 Misaka Gordon 的个人主页 — 波星研究所">
+  <title>御坂戈登 · Misaka Gordon</title>
+  <link rel="stylesheet" href="misaka.css">
+</head>
+
+<body>
+  <!-- ══════════════════════════════════════════════
+       页面骨架：CSS Grid 单列 + 1px 细线分割（NONAME 极简）
+       ══════════════════════════════════════════════ -->
+  <div class="page" id="page">
+
+    <!-- ── ① Header ────────────────────────────── -->
+    <header class="section section--header" data-section="header">
+      <div class="header__inner">
+
+        <div class="header__title">
+          <h1 class="header__title-cn">御坂戈登</h1>
+          <h1 class="header__title-en">Misaka Gordon</h1>
+        </div>
+
+        <!-- 头像 + 简介同容器：防裁切，头像轻微倾斜压底部分割线 -->
+        <div class="header__profile">
+          <figure class="header__avatar">
+            <img src="image/avatar.jpg" alt="御坂戈登的头像" width="250" height="250">
+          </figure>
+          <p class="header__bio">现役高中生，多嘴多舌，学习差劲。会点相声，五音不全。（自以为）老二次元，没事干写点垃圾代码。喜欢摇滚，想玩游戏。做一天和尚，撞一天钟。</p>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ── ② Intro ─────────────────────────────── -->
+    <section class="section section--intro" data-section="intro">
+      <h2 class="intro__line"><i>只想努力做到自己认为的好</i></h2>
+    </section>
+
+    <!-- ── ③ Showcase（Cover Flow）+ Details ───── -->
+    <section class="section section--showcase" data-section="showcase">
+
+      <header class="section__head">
+        <h2 class="section__h2">/我正在……</h2>
+        <p class="section__sub">听的歌</p>
+      </header>
+
+      <!-- Cover Flow：桌面 3D + 惯性吸附；移动端 scroll-snap 降级 -->
+      <div class="coverflow" id="coverflow">
+        <div class="coverflow__stage" id="cfStage" role="listbox"
+             aria-label="专辑封面轮播" aria-activedescendant="cover-0">
+
+          <article class="coverflow__item" role="option" tabindex="0"
+                   id="cover-0" data-index="0"
+                   data-title="Random Access Memories"
+                   data-desc="（可能是）最有人味的电子乐，虽然是两个机器人做的……"
+                   data-link="https://bgm.tv/group/topic/448844"
+                   data-link-text="在Bangumi查看完整评论">
+            <img src="image/opt_ram.jpg"
+                 data-src-remote="https://a5.mzstatic.com/us/r1000/0/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg"
+                 onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src='https://picsum.photos/seed/ram/300/300'}"
+                 alt="Random Access Memories的专辑封面" width="300" height="300" draggable="false">
+          </article>
+
+          <article class="coverflow__item" role="option" tabindex="0"
+                   id="cover-1" data-index="1"
+                   data-title="新长征路上的摇滚"
+                   data-desc="中国摇滚第一专，土包子的唱腔有世界顶尖的质量和群众的心声……完整评论没写（doge"
+                   data-link="" data-link-text="">
+            <img src="image/opt_xzzc.jpg"
+                 data-src-remote="https://a5.mzstatic.com/us/r1000/0/Music115/v4/52/8a/e9/528ae9b1-47a7-a082-8663-83dff561a4fd/cover.jpg"
+                 onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src='https://picsum.photos/seed/xzzc/300/300'}"
+                 alt="《新长征路上的摇滚》封面" width="300" height="300" draggable="false">
+          </article>
+
+          <article class="coverflow__item" role="option" tabindex="0"
+                   id="cover-2" data-index="2"
+                   data-title="Use Your Illusion"
+                   data-desc="最爱的摇滚专辑，我的启蒙"
+                   data-link="" data-link-text="">
+            <img src="image/opt_uyi.jpg"
+                 data-src-remote="https://a5.mzstatic.com/us/r1000/0/Music112/v4/60/fe/ee/60feeeff-5679-5d14-aec8-b98e452ba81c/22UMGIM84636.rgb.jpg"
+                 onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src='https://picsum.photos/seed/uyi/300/300'}"
+                 alt="Use Your Illusion I的专辑封面" width="300" height="300" draggable="false">
+          </article>
+
+          <article class="coverflow__item" role="option" tabindex="0"
+                   id="cover-3" data-index="3"
+                   data-title="冀西南林路行"
+                   data-desc="史上最佳的中国摇滚，前卫摇滚的神"
+                   data-link="" data-link-text="">
+            <img src="image/opt_jxn.jpg"
+                 data-src-remote="https://a5.mzstatic.com/us/r1000/0/Music113/v4/c5/bd/a6/c5bda6ad-0ed6-849d-dc07-c6b527c0b5aa/cover.jpg"
+                 onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src='https://picsum.photos/seed/jxn/300/300'}"
+                 alt="冀西南林路行的封面" width="300" height="300" draggable="false">
+          </article>
+
+          <article class="coverflow__item" role="option" tabindex="0"
+                   id="cover-4" data-index="4"
+                   data-title="Tell Your World EP"
+                   data-desc="livetune如何把我推到术力口大坑"
+                   data-link="" data-link-text="">
+            <img src="image/opt_tyw.jpg"
+                 data-src-remote="https://a5.mzstatic.com/us/r1000/0/Music115/v4/0d/6f/5c/0d6f5cd0-af35-4aa2-56cb-69644e55da18/mzi.lfrvelge.jpg"
+                 onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src='https://picsum.photos/seed/tyw/300/300'}"
+                 alt="Tell Your World EP cover" width="300" height="309" draggable="false">
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Details：指针(::before)骑在本区顶边、尖端朝上指封面；文字随选中项淡入淡出 -->
+      <div class="details" id="details" aria-live="polite">
+        <div class="details__inner" id="detailsInner">
+          <h3 class="details__title" id="dTitle">Random Access Memories</h3>
+          <p class="details__desc" id="dDesc">（可能是）最有人味的电子乐，虽然是两个机器人做的……</p>
+          <p class="details__actions" id="dActions">
+            <a class="details__link" href="https://bgm.tv/group/topic/448844"
+               target="_blank" rel="noopener">在Bangumi查看完整评论</a>
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── ④ Info：小型博客（未完成，按源保留）── -->
+    <section class="section section--info" data-section="blog">
+      <header class="section__head">
+        <h2 class="section__h2">/小型博客……</h2>
+      </header>
+      <div class="section__body">
+        <p class="section__placeholder">施工中</p>
+      </div>
+    </section>
+
+    <!-- ── ⑤ Info：项目（未完成，按源保留）────── -->
+    <section class="section section--info" data-section="projects">
+      <header class="section__head">
+        <h2 class="section__h2">/项目……</h2>
+      </header>
+      <div class="section__body">
+        <p class="section__placeholder">施工中</p>
+      </div>
+    </section>
+
+    <!-- ── ⑥ Footer：草图占位，勿加排版 ─────────── -->
+    <footer class="section section--footer" data-section="footer">
+      <!-- TODO: 有内容后直接替换此占位框 -->
+      <div class="footer__todo" role="note">
+        <span>↓</span><span>TO BE DONE</span><span>↓</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="misaka.js" defer></script>
+</body>
+</html>

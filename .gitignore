@@ -1,0 +1,11 @@
+# 专辑封面等第三方图片：仅本地预览用，不入库（版权）
+misaka/image/ram.jpg
+misaka/image/xzzc.jpg
+misaka/image/uyi.jpg
+misaka/image/jxn.jpg
+misaka/image/tyw.jpg
+misaka/image/opt_*.jpg
+serve.cmd
+serve.py
+test-js.js
+test-js.html

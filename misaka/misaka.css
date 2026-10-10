@@ -1,0 +1,369 @@
+/* ══════════════════════════════════════════════════════════
+   御坂戈登 · Misaka Gordon
+   NONAME 极简风：浅色底 / 1px 细线 / 大留白 / 紧凑网格
+   ══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:        #ffffff;
+  --bg-soft:   #fafafa;
+  --ink:       #111111;
+  --muted:     #6b6b6b;
+  --line:      #e8e8e8;          /* 浅色细分割线 */
+  --line-soft: #f0f0f0;
+
+  --maxw: 760px;
+  --pad-x: clamp(20px, 5vw, 48px);
+
+  --avatar-size: clamp(120px, 18vw, 200px);
+  --avatar-tilt: -5deg;          /* 倾斜角度：小，与文字对齐 */
+
+  --card-w: clamp(180px, 26vw, 280px);
+  --gap: 36px;                   /* Cover Flow 卡片步距 */
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; }
+
+/* ── 整体骨架：单列 Grid，区块之间有明确分割线 ───────────── */
+
+.page {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  border-inline: 1px solid var(--line);   /* NONAME 左右两条竖细线 */
+}
+
+.section {
+  position: relative;
+  padding: clamp(40px, 7vw, 72px) var(--pad-x);
+}
+
+/* 区块之间统一用浅色 1px 细线分割（最后一个不画） */
+.section + .section { border-top: 1px solid var(--line); }
+
+/* ── ① Header ───────────────────────────────────────────── */
+
+.section--header {
+  padding-bottom: calc(var(--avatar-size) * .32);  /* 给头像下探留空间，防裁切 */
+}
+
+.header__inner { display: grid; gap: clamp(32px, 6vw, 56px); }
+
+.header__title { text-align: center; }
+
+.header__title-cn,
+.header__title-en {
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: .14em;
+  line-height: 1.15;
+}
+
+.header__title-cn { font-size: clamp(34px, 7vw, 56px); }
+.header__title-en {
+  font-size: clamp(20px, 3.4vw, 28px);
+  color: var(--muted);
+  letter-spacing: .2em;
+  margin-top: .35em;
+}
+
+/* 头像 + 简介：同一 flex 行 —— NONAME 的“头像与文字并排” */
+
+.header__profile {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(16px, 3vw, 28px);
+  position: relative;
+  z-index: 2;                     /* 高于 intro，避免被压 */
+}
+
+.header__avatar {
+  margin: 0;
+  flex: 0 0 var(--avatar-size);
+  width: var(--avatar-size);
+  transform: translateY(28%) rotate(var(--avatar-tilt));  /* 贴线 + 轻微倾斜 */
+  transform-origin: 50% 100%;
+  overflow: hidden;               /* 裁切只发生在头像自身 */
+  border: 1px solid var(--line);
+  background: var(--bg);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+}
+
+.header__avatar img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.header__bio {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--ink);
+  font-size: clamp(13.5px, 1.6vw, 15px);
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* ── ② Intro ────────────────────────────────────────────── */
+
+.section--intro {
+  padding-block: clamp(36px, 6vw, 56px);
+  text-align: center;
+}
+
+.intro__line {
+  margin: 0;
+  font-size: clamp(16px, 2.4vw, 20px);
+  font-weight: 400;
+  letter-spacing: .1em;
+}
+
+.intro__line i { font-style: italic; color: var(--ink); }
+
+/* ── ③ Showcase / Cover Flow ────────────────────────────── */
+
+.section__head { margin-bottom: clamp(24px, 4vw, 40px); }
+
+.section__h2 {
+  margin: 0;
+  font-size: clamp(18px, 2.6vw, 22px);
+  font-weight: 500;
+  letter-spacing: .06em;
+}
+
+.section__sub {
+  margin: .2em 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: .14em;
+}
+
+/* Cover Flow 视口
+   关键：3D 舞台用 absolute + inset:0 脱离常规流，
+   避免被 transform 的子元素把所在 Grid 轨道撑宽（移动端 1304px 溢出 bug）。 */
+
+.coverflow {
+  position: relative;
+  margin-inline: calc(var(--pad-x) * -1);   /* 贴到区块边，留白更大方 */
+  padding-block: clamp(8px, 2vw, 20px);
+  height: calc(var(--card-w) + 40px);       /* 显式高度，舞台绝对定位依赖它 */
+  overflow: hidden;                          /* 只裁卡片舞台，不影响指针 */
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.coverflow.is-dragging { cursor: grabbing; }
+
+.coverflow__stage {
+  position: absolute;                        /* 脱离常规流：不参与 Grid 轨道计算 */
+  inset: 0;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+.coverflow__item {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--card-w);
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+  transition: filter .35s var(--ease);
+}
+
+.coverflow__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid var(--line-soft);
+  background: var(--bg-soft);
+  pointer-events: none;
+}
+
+.coverflow__item[aria-selected="true"] {
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .14);
+}
+
+/* 移动端降级：横向 scroll-snap 列表 */
+.coverflow.is-scrollmode {
+  height: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.coverflow.is-scrollmode::-webkit-scrollbar { display: none; }
+.coverflow.is-scrollmode .coverflow__stage {
+  position: relative;                       /* 回到常规流，让横向滚动生效 */
+  inset: auto;
+  display: flex;
+  gap: 16px;
+  width: 0;                                 /* 防止 3D 绝对子元素撑宽 Grid 轨道 */
+  min-width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding-inline: var(--pad-x);
+  perspective: none;
+  transform-style: flat;
+}
+.coverflow.is-scrollmode .coverflow__item {
+  position: static;
+  flex: 0 0 clamp(160px, 62vw, 240px);
+  scroll-snap-align: center;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* ── V 形指针：Details 顶部，底端骑线、尖端朝上指封面 ──── */
+
+.details {
+  position: relative;
+  margin-top: clamp(24px, 4vw, 40px);
+  padding-top: clamp(48px, 6vw, 64px);      /* 给指针让位 */
+  text-align: center;
+  z-index: 1;
+}
+
+/* 细分割线：正好落在 Details 顶边，指针“骑”在它上面 */
+.details::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--line);
+}
+
+.details::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 46px;
+  height: 26px;
+  transform: translate(-50%, -55%);         /* 底端骑在分割线上 */
+  background: var(--ink);
+  /* 尖端朝上（50% 0），两侧翼落到底边（0/100% 100%），下半镂空使与文字区连体 */
+  clip-path: polygon(50% 0, 100% 100%, 74% 100%, 50% 34%, 26% 100%, 0 100%);
+}
+
+.details__inner {
+  transition: opacity .28s var(--ease), transform .28s var(--ease);
+}
+
+.details__inner.is-fading {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.details__title {
+  margin: 0 0 .4em;
+  font-size: clamp(15px, 2vw, 17px);
+  font-weight: 500;
+  letter-spacing: .1em;
+}
+
+.details__desc {
+  margin: 0 auto;
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: clamp(13.5px, 1.6vw, 14.5px);
+  line-height: 1.9;
+}
+
+.details__actions { margin: 1em 0 0; }
+
+.details__link {
+  font-size: 13px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 1px;
+  transition: opacity .2s var(--ease);
+}
+
+.details__link:hover { opacity: .55; }
+
+/* ── ④⑤ Info ───────────────────────────────────────────── */
+
+.section--info { padding-block: clamp(32px, 5vw, 48px); }
+
+.section__body { margin-top: clamp(14px, 2vw, 20px); }
+
+.section__placeholder {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  letter-spacing: .1em;
+}
+
+/* ── ⑥ Footer：极简虚线占位框，勿加排版 ─────────────────── */
+
+.section--footer { padding-block: clamp(28px, 4vw, 40px); }
+
+.footer__todo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .7em;
+  padding: clamp(24px, 4vw, 36px) 1rem;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: .28em;
+  text-indent: .28em;
+}
+
+/* ── 响应式 ─────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .header__profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+  .header__avatar {
+    transform: translateY(22%) rotate(-3deg);
+  }
+  .header__bio { text-align: center; }
+
+  :root {
+    --gap: 20px;
+    --card-w: clamp(150px, 56vw, 220px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
