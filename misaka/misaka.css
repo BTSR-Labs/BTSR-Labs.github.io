@@ -11,8 +11,9 @@
   --line:      #e8e8e8;          /* 浅色细分割线 */
   --line-soft: #f0f0f0;
 
-  --maxw: 760px;
+  --maxw: 1100px;
   --pad-x: clamp(20px, 5vw, 48px);
+  --maxw-pad: max(var(--pad-x), calc((100% - var(--maxw)) / 2 + var(--pad-x)));
 
   --avatar-size: clamp(120px, 18vw, 200px);
   --avatar-tilt: -5deg;          /* 倾斜角度：小，与文字对齐 */
@@ -48,9 +49,9 @@ a { color: inherit; }
 .page {
   display: grid;
   grid-template-columns: 1fr;
-  max-width: var(--maxw);
-  margin: 0 auto;
-  border-inline: 1px solid var(--line);   /* NONAME 左右两条竖细线 */
+  width: 100%;
+  max-width: none;                 /* 左右占满页面 */
+  margin: 0;
 }
 
 .section {
@@ -64,7 +65,14 @@ a { color: inherit; }
 /* ── ① Header ───────────────────────────────────────────── */
 
 .section--header {
-  padding-bottom: calc(var(--avatar-size) * .32);  /* 给头像下探留空间，防裁切 */
+  padding-inline: var(--maxw-pad);           /* 内容居中限宽 */
+  padding-bottom: 0;                          /* 头像靠 translate 压线，不留额外空间 */
+}
+
+.section--header > .header__inner {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-bottom: calc(var(--avatar-size) * .5);  /* 头像下探一半的高度 */
 }
 
 .header__inner { display: grid; gap: clamp(32px, 6vw, 56px); }
@@ -101,7 +109,7 @@ a { color: inherit; }
   margin: 0;
   flex: 0 0 var(--avatar-size);
   width: var(--avatar-size);
-  transform: translateY(28%) rotate(var(--avatar-tilt));  /* 贴线 + 轻微倾斜 */
+  transform: translateY(50%) rotate(var(--avatar-tilt));  /* 一半压在分割线上 */
   transform-origin: 50% 100%;
   overflow: hidden;               /* 裁切只发生在头像自身 */
   border: 1px solid var(--line);
@@ -121,17 +129,21 @@ a { color: inherit; }
   flex: 1 1 auto;
   min-width: 0;
   color: var(--ink);
-  font-size: clamp(13.5px, 1.6vw, 15px);
-  line-height: 1.9;
+  font-size: clamp(12px, 1.3vw, 13.5px);
+  line-height: 1.85;
   text-align: justify;
 }
 
-/* ── ② Intro ────────────────────────────────────────────── */
+/* ── ② Intro（下一板块：加大留白，容纳头像下探的一半）──── */
 
 .section--intro {
-  padding-block: clamp(36px, 6vw, 56px);
+  padding-block: clamp(56px, 9vw, 104px);
+  padding-top: clamp(80px, 10vw, 128px);   /* 让出头像下探的一半，避免被头像盖住 */
+  padding-inline: var(--maxw-pad);
   text-align: center;
 }
+
+.section--intro > * { max-width: var(--maxw); margin-inline: auto; }
 
 .intro__line {
   margin: 0;
@@ -143,6 +155,13 @@ a { color: inherit; }
 .intro__line i { font-style: italic; color: var(--ink); }
 
 /* ── ③ Showcase / Cover Flow ────────────────────────────── */
+
+.section--showcase,
+.section--info,
+.section--footer { padding-inline: var(--maxw-pad); }
+.section--showcase > *,
+.section--info > *,
+.section--footer > * { max-width: var(--maxw); margin-inline: auto; }
 
 .section__head { margin-bottom: clamp(24px, 4vw, 40px); }
 
@@ -354,9 +373,10 @@ a { color: inherit; }
     gap: 20px;
   }
   .header__avatar {
-    transform: translateY(22%) rotate(-3deg);
+    transform: translateY(50%) rotate(-3deg);  /* 一半压在分割线上 */
   }
-  .header__bio { text-align: center; }
+  /* 竖排时头像下探会盖住简介：给简介上方留出头像下半张的空间 */
+  .header__bio { text-align: center; margin-top: calc(var(--avatar-size) * .5); }
 
   :root {
     --gap: 20px;
